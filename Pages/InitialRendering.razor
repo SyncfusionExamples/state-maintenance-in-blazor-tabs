@@ -1,214 +1,111 @@
 ﻿@page "/initialrendering"
 
-
+@using BlazorStateMaintenance.Data
+@inject FormService form
 @using Syncfusion.Blazor.Navigations
-
 @using Syncfusion.Blazor.Inputs
-
 @using Syncfusion.Blazor.Buttons
 
-
-
 <SfTab LoadOn="ContentLoad.Init" @bind-SelectedItem="@selectedTab">
-
     <TabItems>
-
         <TabItem>
-
             <HeaderTemplate>Sign in</HeaderTemplate>
-
             <ContentTemplate>
-
                 <div id="User details" style="padding:10px">
-
                     <form id="formId">
-
                         <div class="form-group">
-
                             <div class="e-float-input">
-
-                                <SfTextBox Placeholder="Enter name" @bind-Value="userName"></SfTextBox>
-
+                                <SfTextBox Placeholder="Enter name" @bind-Value="form.UserName"></SfTextBox>
                             </div>
-
                             <div class="e-float-input">
-
-                                <SfTextBox Placeholder="Email" @bind-Value="mailAddress" Type="InputType.Email"></SfTextBox>
-
+                                <SfTextBox Placeholder="Email" @bind-Value="form.MailAddress" Type="InputType.Email"></SfTextBox>
                             </div>
-
                         </div>
-
                     </form>
-
                     <div style="text-align: center">
-
-                        <SfButton @onclick="@onSignin">Sign in</SfButton>
-
-                        <SfButton @onclick="@onSkip">Skip</SfButton>
-
-                        @if (EmptyField)
-
+                        <SfButton @onclick="@OnSignin">Sign in</SfButton>
+                        <SfButton @onclick="@OnSkip">Skip</SfButton>
+                        @if (emptyField)
                         {
-
                             <div class="Error">* Please fill all fields</div>
-
                         }
-
                     </div>
-
                 </div>
-
             </ContentTemplate>
-
         </TabItem>
-
         <TabItem>
-
             <HeaderTemplate>Syncfusion Blazor</HeaderTemplate>
-
             <ContentTemplate>
-
                 <p>You can check out our Syncfusion Blazor demo here - https://blazor.syncfusion.com/demos/ </p>
-
                 <br />
-
                 <p>Also user guide will be avail here - https://blazor.syncfusion.com/documentation/introduction/</p>
-
             </ContentTemplate>
-
         </TabItem>
-
         <TabItem>
-
             <HeaderTemplate>Feedback</HeaderTemplate>
-
             <ContentTemplate>
-
                 <div id="Feedback_Form" style="padding:10px">
-
                     <form id="formId">
-
                         <div class="form-group">
-
                             <div class="e-float-input">
-
-                                <SfTextBox Placeholder="Enter name" @bind-Value="userName"></SfTextBox>
-
+                                <SfTextBox Placeholder="Enter name" @bind-Value="form.UserName"></SfTextBox>
                             </div>
-
                             <div class="e-float-input">
-
-                                <SfTextBox @bind-Value="mailAddress" Placeholder="Email" Type="InputType.Email"></SfTextBox>
-
+                                <SfTextBox @bind-Value="form.MailAddress" Placeholder="Email" Type="InputType.Email"></SfTextBox>
                             </div>
-
                             <div class="e-float-input">
-
                                 <SfTextBox @bind-Value="comments" Placeholder="Share your comments"></SfTextBox>
-
                             </div>
-
                         </div>
-
                     </form>
-
                     <div style="text-align: center">
-
                         <SfButton @onclick="@OnSubmit">Submit</SfButton>
-
-                        @if (EmptyField)
-
+                        @if (emptyField)
                         {
-
                             <div class="Error">* Please fill all fields</div>
-
                         }
-
                     </div>
-
                 </div>
-
             </ContentTemplate>
-
         </TabItem>
-
     </TabItems>
-
 </SfTab>
 
-
-
 @code {
+    private string comments { get; set; }
+    private int selectedTab { get; set; } = 0;
+    private Boolean emptyField = false;
 
-    private string userName;
-
-    private string mailAddress;
-
-    private string comments;
-
-    private int selectedTab = 0;
-
-    public Boolean EmptyField { get; set; } = false;
-
-    private void onSignin()
-
+    private void OnSignin()
     {
-
-        if (this.userName == null || this.mailAddress == null)
-
+        if (form.UserName == null || form.MailAddress == null)
         {
-
-            EmptyField = true;
-
+            emptyField = true;
         }
-
         else
-
         {
-
-            EmptyField = false;
-
+            emptyField = false;
             this.selectedTab = 1;
-
         }
-
     }
 
-    private void onSkip()
-
+    private void OnSkip()
     {
-
         this.selectedTab = 1;
-
     }
 
-    public void OnSubmit()
-
+    private void OnSubmit()
     {
-
-        if (this.userName == null || this.mailAddress == null || this.comments == null)
-
+        if (form.UserName == null || form.MailAddress == null || this.comments == null)
         {
-
-            EmptyField = true;
-
+            emptyField = true;
         }
-
         else
-
         {
-
-            EmptyField = false;
-
-            this.userName = null;
-
-            this.mailAddress = null;
-
+            emptyField = false;
+            form.UserName = null;
+            form.MailAddress = null;
             this.comments = null;
-
         }
-
     }
-
 }
